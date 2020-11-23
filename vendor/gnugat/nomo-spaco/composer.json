@@ -1,0 +1,35 @@
+{
+    "name": "gnugat/nomo-spaco",
+    "license": "MIT",
+    "type": "project",
+    "description": "Displays the declared fully qualified classnames of a project",
+    "keywords": ["detect", "available", "fully qualified classname"],
+    "autoload": {
+        "psr-4": {
+            "Gnugat\\NomoSpaco\\": "src/Gnugat/NomoSpaco"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "test\\Gnugat\\NomoSpaco\\": "test"
+        },
+        "files": ["test/make_fqcn_repository.php"]
+    },
+    "bin": [
+        "bin/nomo-spaco"
+    ],
+    "authors": [
+        {
+            "name": "Loïc Chardonnet",
+            "email": "loic.chardonnet@gmail.com",
+            "homepage": "http://gnugat.github.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
+    }
+}
