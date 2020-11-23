@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4b1e30e2-683b-4d0a-b10b-0fc201341287",
+		"_postman_id": "9f7bd913-dd77-48dc-a059-9ce695eeaef5",
 		"name": "Gulf Factory Api",
 		"description": "souq vis multi factory api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -1365,7 +1365,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "8eb3bdb6-acfe-4fe8-9998-e1589121249d",
+						"id": "6042eb4e-17c5-45f7-a535-7e4a77d19b82",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1375,7 +1375,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5df82312-a576-4dd3-9659-999d49750356",
+						"id": "e98631af-1b0e-483a-bbd1-d646477d2b29",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1439,7 +1439,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "276e509c-f56b-427f-9f86-43e278f7df4a",
+						"id": "f9607c24-b73a-4d7c-9920-a94d95df1190",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1449,7 +1449,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8fb8794b-34da-48af-9254-343af216eec4",
+						"id": "afb249fd-cd46-442a-bb8d-682b387381d9",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2001,7 +2001,7 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "magazine",
+			"name": "magazine and magazine topic",
 			"item": [
 				{
 					"name": "getMagazineTopic",
@@ -2154,7 +2154,7 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "like-article",
+			"name": "like-article-page-14",
 			"item": [
 				{
 					"name": "like-article-local",
@@ -2192,7 +2192,7 @@
 					"response": []
 				},
 				{
-					"name": "like-article-local",
+					"name": "like-article",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -3730,7 +3730,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3594cf6b-36cb-4b2b-a029-8f0f9831ed7f",
+								"id": "ce989f6d-6e95-4f93-8cf1-1587c5f64f62",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -3740,7 +3740,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9d2dee05-c68d-4ec3-96fa-b1ba0fe45441",
+								"id": "87fb7c55-2d32-4cb1-ba65-8660135325e1",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -3983,6 +3983,63 @@
 						"auth",
 						"register",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login-local",
+			"protocolProfileBehavior": {
+				"followRedirects": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "mobile",
+							"value": "01055331144",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "9070",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/auth/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"login",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},

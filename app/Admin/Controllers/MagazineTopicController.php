@@ -124,9 +124,11 @@ class MagazineTopicController extends Controller
             $lang_id = $request->lang_id ?? 1;
             $magazineTopic = new MagazineTopic();
               $selected = $magazineTopic->getMagazineTopic($id, $lang_id);
+              
               return $this->sendResponse($selected, 200);
                           
         }catch(\Exception $ex){
+            dd($ex);
            return $this->sendError("error", 400);
         }
   }
