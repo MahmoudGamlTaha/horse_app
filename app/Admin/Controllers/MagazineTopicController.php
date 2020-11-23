@@ -128,7 +128,6 @@ class MagazineTopicController extends Controller
               return $this->sendResponse($selected, 200);
                           
         }catch(\Exception $ex){
-            dd($ex);
            return $this->sendError("error", 400);
         }
   }
