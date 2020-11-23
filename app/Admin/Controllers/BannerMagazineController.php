@@ -215,5 +215,6 @@ class BannerMagazineController extends Controller
                     ->get();
        return $this->sendResponse($banners,200);
     }
+    
 
 }

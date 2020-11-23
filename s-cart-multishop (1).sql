@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2020 at 08:00 PM
+-- Generation Time: Nov 23, 2020 at 10:51 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -8419,7 +8419,16 @@ INSERT INTO `admin_operation_log` (`id`, `company_id`, `user_id`, `path`, `metho
 (8204, NULL, 5, 'system_admin/company', 'GET', '127.0.0.1', '[]', '2020-11-21 23:14:03', '2020-11-21 23:14:03'),
 (8205, NULL, 5, 'system_admin/company/11/edit', 'GET', '127.0.0.1', '[]', '2020-11-21 23:14:05', '2020-11-21 23:14:05'),
 (8206, NULL, 5, 'system_admin/banner', 'GET', '127.0.0.1', '{\"_pjax\":\"#pjax-container\"}', '2020-11-21 23:14:18', '2020-11-21 23:14:18'),
-(8207, NULL, 5, 'system_admin/banner/24/edit', 'GET', '127.0.0.1', '[]', '2020-11-21 23:14:22', '2020-11-21 23:14:22');
+(8207, NULL, 5, 'system_admin/banner/24/edit', 'GET', '127.0.0.1', '[]', '2020-11-21 23:14:22', '2020-11-21 23:14:22'),
+(8208, NULL, 5, 'system_admin/videos', 'GET', '127.0.0.1', '[]', '2020-11-22 02:31:41', '2020-11-22 02:31:41'),
+(8209, NULL, 5, 'system_admin/banner', 'GET', '127.0.0.1', '{\"_pjax\":\"#pjax-container\"}', '2020-11-22 02:31:47', '2020-11-22 02:31:47'),
+(8210, NULL, 5, 'system_admin/banner-magazine', 'GET', '127.0.0.1', '{\"_pjax\":\"#pjax-container\"}', '2020-11-22 02:31:49', '2020-11-22 02:31:49'),
+(8211, NULL, 5, 'system_admin/banner-magazine/3/edit', 'GET', '127.0.0.1', '[]', '2020-11-22 02:31:53', '2020-11-22 02:31:53'),
+(8212, NULL, 5, 'system_admin/banner-magazine', 'GET', '127.0.0.1', '{\"_pjax\":\"#pjax-container\"}', '2020-11-22 02:32:08', '2020-11-22 02:32:08'),
+(8213, NULL, 5, 'system_admin/banner', 'GET', '127.0.0.1', '{\"_pjax\":\"#pjax-container\"}', '2020-11-22 02:32:09', '2020-11-22 02:32:09'),
+(8214, NULL, 5, 'system_admin/banner/create', 'GET', '127.0.0.1', '[]', '2020-11-22 02:32:27', '2020-11-22 02:32:27'),
+(8215, NULL, 5, 'system_admin', 'GET', '127.0.0.1', '[]', '2020-11-22 02:32:37', '2020-11-22 02:32:37'),
+(8216, NULL, 5, 'system_admin', 'GET', '127.0.0.1', '[]', '2020-11-23 18:42:39', '2020-11-23 18:42:39');
 
 -- --------------------------------------------------------
 
@@ -8588,7 +8597,7 @@ INSERT INTO `admin_users` (`id`, `username`, `password`, `company_id`, `name`, `
 (1, 'admin', '$2y$10$XisO29cFPf1fJQp1toGt7uYSy7lQMGj67ceC/x6x0JJ9Wbn7KLL7e', 1, 'Administrator', NULL, NULL, NULL, 0, 1, NULL, '0', '0', '0', 'Ol3ZqomrDiawz16wCs7jCVjJHJ5Chhe97yFDdq9p2kKZs4WZSBr97YtxVd3H', NULL, 'admin@adminco.com', '2018-01-12 10:27:40', '2019-03-31 01:59:05'),
 (3, 'test', '$2y$10$Ao7Uey2z5jPFta/rZG51XuG1OZiWdlbdf3QSgsAjKn9Hfpcp14Ami', NULL, 'User', NULL, NULL, NULL, 0, 0, NULL, '0', '0', '0', '5JS9Sgy0dX24uyOwFjR5w5rCgimd7B2Y1DLvxQgnZ2w0IJY7nNO9vqTg2AOl', NULL, NULL, '2018-01-12 11:05:28', '2018-09-23 11:56:26'),
 (4, 'mahmoud', '$2y$10$ZIWhkat2JRBesEk4VrS.P.75KgmeIjvHiSi2orh5UEwRlnHcV/F9i', 2, 'mahmoud', NULL, NULL, NULL, 0, 1, NULL, '0', '0', '0', NULL, NULL, 'mahmoud@mahmoudco.com', '2019-05-02 20:23:08', '2019-05-02 20:23:08'),
-(5, 'superadmin@admin.com', '$2y$10$XisO29cFPf1fJQp1toGt7uYSy7lQMGj67ceC/x6x0JJ9Wbn7KLL7e', 3, 'Administrator', NULL, 'profileImageCustomer/2337cb50954bc3d40495dd7286a336c6.jpg', 'http://127.0.0.1:8000/documents/website/', 1, 1, '01065331143', 'egypt', 'cairo', NULL, 'oMih89RGa60gQPleA1asPebfdZXkqr4FxVjQU6wM2GHcUAjPrfjgAsP4n0Dc', 'P6A2XYnhNb9Um5gMC321l9W63Cp0Vj18HcsUPccf', 'superadmin@admin.com', '2018-01-12 10:27:40', '2020-09-18 19:30:47'),
+(5, 'superadmin@admin.com', '$2y$10$XisO29cFPf1fJQp1toGt7uYSy7lQMGj67ceC/x6x0JJ9Wbn7KLL7e', 3, 'Administrator', NULL, 'profileImageCustomer/2337cb50954bc3d40495dd7286a336c6.jpg', 'http://127.0.0.1:8000/documents/website/', 1, 1, '01065331143', 'egypt', 'cairo', NULL, 'oMih89RGa60gQPleA1asPebfdZXkqr4FxVjQU6wM2GHcUAjPrfjgAsP4n0Dc', 'GSkcqvvCBbnpavMv8odM8qifet6ubm6q5RIUljdS', 'superadmin@admin.com', '2018-01-12 10:27:40', '2020-11-24 01:23:07'),
 (6, 'mahmoud8_x', '$2y$10$jNg5VCm8CQwCN2qXsLtkdeeGhDzZklGcRDmPvZ1op9ffRS5t90zni', NULL, 'mahmoud9', 'x', 'ImgProfile/e0e99a077ae55d84fe39fcb2fb5d43b0.jpeg', 'http://127.0.0.1:8000/documents/website/', 0, 0, NULL, '0', '0', '0', 'X2Xjiqr4z5iez21AA26QIu4mydF2D9itexbEDWpGadlZa6TN3VqaDrchoSdU', NULL, 'test2@test2.com', '2020-02-21 14:37:50', '2020-07-24 21:53:18'),
 (7, 'mahmoud gamal', '$2y$10$XisO29cFPf1fJQp1toGt7uYSy7lQMGj67ceC/x6x0JJ9Wbn7KLL7e', 11, 'mahmoud', 'gamal', NULL, NULL, 0, 1, NULL, '0', '0', '0', '2Sj7aS1PUJOk1Nj0yBrLI2aMgyOO4NPmpWI5alQV35bPA9sJHQbUu2TiNvuA', NULL, 'ms_ms725490@yahoo.com', '2020-05-06 04:41:33', '2020-05-06 04:41:33');
 
@@ -8633,7 +8642,7 @@ CREATE TABLE `article_like` (
 --
 
 INSERT INTO `article_like` (`id`, `article_id`, `user_id`, `likes`, `compnay_id`, `created_at`, `updated_at`) VALUES
-(1, 2, NULL, 1, NULL, '2020-08-12 00:10:57', '2020-08-12 00:10:57'),
+(1, 12, 5, 1, NULL, '2020-08-12 00:10:57', '2020-08-12 00:10:57'),
 (2, 2, NULL, 1, NULL, '2020-08-12 00:11:17', '2020-08-12 00:11:17'),
 (3, 2, 5, 1, NULL, '2020-08-12 00:17:56', '2020-08-12 00:17:56');
 
@@ -11825,7 +11834,7 @@ ALTER TABLE `admin_menu`
 -- AUTO_INCREMENT for table `admin_operation_log`
 --
 ALTER TABLE `admin_operation_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8208;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8217;
 
 --
 -- AUTO_INCREMENT for table `admin_permissions`

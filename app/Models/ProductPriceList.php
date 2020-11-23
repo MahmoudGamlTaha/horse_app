@@ -18,8 +18,8 @@ class ProductPriceList extends Model {
   {
       return $this->belongsTo(ShopProduct::class, 'product_id', 'id');
   }
-  public function unit(){
-    return $this->belongsTo(UofM::class, 'uof_id', 'id');
+   public function unit(){
+    return $this->belongsTo(Uofms::class, 'uof_id', 'id');
   }
  public function group(){
   return $this->belongsTo(UofmGroups::class, 'uof_group', 'id');
