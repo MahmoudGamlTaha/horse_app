@@ -125,7 +125,7 @@ class ChampionController extends Controller
             return $this->sendResponse($selected, 200);
                         
      }catch(\Exception $ex){
-         return $this->sendError("champion error ", 400);
+         return $this->sendError($ex->getMessage(), 400);
       }
   }
   public function getChampionesYears(Request $request){

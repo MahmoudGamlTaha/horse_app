@@ -34,7 +34,7 @@ class Champion extends Model
         return  $this->where("active", 1)
            ->whereIn('type', $type)
            ->whereRaw($str)
-            ->with(["description" => function($query) use($lang_id){
+            ->with(["meta_data" => function($query) use($lang_id){
                 $query->where("lang_id", $lang_id);
             }])
             ->with("result")
