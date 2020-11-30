@@ -2707,7 +2707,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://hourse.highcoder.com/api/get-banner-magazine/3?type=1",
+									"raw": "http://hourse.highcoder.com/api/get-banner-magazine/1?type=1",
 									"protocol": "http",
 									"host": [
 										"hourse",
@@ -2717,7 +2717,7 @@
 									"path": [
 										"api",
 										"get-banner-magazine",
-										"3"
+										"1"
 									],
 									"query": [
 										{
@@ -2925,6 +2925,50 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "search",
+					"item": [
+						{
+							"name": "search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "hourse.highcoder.com/api/search?param",
+									"host": [
+										"hourse",
+										"highcoder",
+										"com"
+									],
+									"path": [
+										"api",
+										"search"
+									],
+									"query": [
+										{
+											"key": "param",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -3012,7 +3056,233 @@
 		},
 		{
 			"name": "filter-page-3",
-			"item": [],
+			"item": [
+				{
+					"name": "champion-by year",
+					"item": [
+						{
+							"name": "getChampion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://hourse.highcoder.com/api/champion?lang_id=2",
+									"protocol": "http",
+									"host": [
+										"hourse",
+										"highcoder",
+										"com"
+									],
+									"path": [
+										"api",
+										"champion"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "2"
+										},
+										{
+											"key": "type",
+											"value": "CHAMPION",
+											"description": "CLASS OR CHAMPION OR ignore type get all",
+											"disabled": true
+										},
+										{
+											"key": "year",
+											"value": null,
+											"description": "(2020) or (2019) if not send get next champions ",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getChampion-local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/champion?lang_id=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"champion"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "1"
+										},
+										{
+											"key": "type",
+											"value": "CLASS",
+											"description": "CLASS OR CHAMPION OR ignore type get all",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get chmpion by title and country",
+					"item": [
+						{
+							"name": "filter",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://horse.highcoder.com/api/champion/filter?lang_id=1",
+									"protocol": "http",
+									"host": [
+										"horse",
+										"highcoder",
+										"com"
+									],
+									"path": [
+										"api",
+										"champion",
+										"filter"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "1"
+										},
+										{
+											"key": "country",
+											"value": "country",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "title",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter-local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/champion/filter?lang_id=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"champion",
+										"filter"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "1"
+										},
+										{
+											"key": "country",
+											"value": "poo",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "champion",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "years",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://http:/hourse.highcoder.com/api/champion/years?lang_id=1",
+							"protocol": "http",
+							"host": [
+								"http"
+							],
+							"port": "",
+							"path": [
+								"",
+								"hourse.highcoder.com",
+								"api",
+								"champion",
+								"years"
+							],
+							"query": [
+								{
+									"key": "lang_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "years-local",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/champion/years?lang_id=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"champion",
+								"years"
+							],
+							"query": [
+								{
+									"key": "lang_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
@@ -3847,6 +4117,218 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "filter-page-6",
+			"item": [
+				{
+					"name": "country_list",
+					"item": [
+						{
+							"name": "countries-local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/countries?lang_id=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"countries"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "countries",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://hourse.highcoder.com/api/countries",
+									"protocol": "http",
+									"host": [
+										"hourse",
+										"highcoder",
+										"com"
+									],
+									"path": [
+										"api",
+										"countries"
+									],
+									"query": [
+										{
+											"key": "lang_id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "horse-stall",
+					"item": [
+						{
+							"name": "List of vendor has specific cat type",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "admin",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "superadmin@admin.com",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://hourse.highcoder.com/api/vendorWithCatType",
+									"protocol": "http",
+									"host": [
+										"hourse",
+										"highcoder",
+										"com"
+									],
+									"path": [
+										"api",
+										"vendorWithCatType"
+									],
+									"query": [
+										{
+											"key": "cat_type",
+											"value": null,
+											"disabled": true
+										}
+									]
+								},
+								"description": "add specific type of category return all factories that has this category"
+							},
+							"response": []
+						},
+						{
+							"name": "List of vendor has specific cat type-local",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "admin",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "superadmin@admin.com",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/vendorWithCatType?cat_type=PHOTOGRAPHER",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"vendorWithCatType"
+									],
+									"query": [
+										{
+											"key": "cat_type",
+											"value": "PHOTOGRAPHER"
+										}
+									]
+								},
+								"description": "add specific type of category return all factories that has this category"
+							},
+							"response": []
+						},
+						{
+							"name": "cat-type-list-local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/vendorCatType",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"vendorCatType"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cat-type-list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/vendorCatType",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"vendorCatType"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}

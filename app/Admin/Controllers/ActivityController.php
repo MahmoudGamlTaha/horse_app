@@ -1,23 +1,21 @@
 <?php
  namespace App\Admin\Controllers;
- use App\Http\Controllers\Controller;
- use App\Models\Company;
- use App\Models\ShopActivity;
- use App\Models\CompanyContact;
-use App\Models\ConfigGlobalDescription;
-use App\Models\Language;
-use App\Models\ShopProduct;
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Show;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Controllers\HasResourceActions;
-use Encore\Admin\Form\Field\Image;
-use Encore\Admin\Form\Field\UploadField;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+    use App\Http\Controllers\Controller;
+    use App\Models\Company;
+    use App\Models\ShopActivity;
+    use App\Models\CompanyContact;
+    use App\Models\Language;
+    use Encore\Admin\Form;
+    use Encore\Admin\Grid;
+    use Encore\Admin\Layout\Content;
+    use Encore\Admin\Show;
+    use Encore\Admin\Facades\Admin;
+    use Encore\Admin\Controllers\HasResourceActions;
+    use Encore\Admin\Form\Field\Image;
+    use Encore\Admin\Form\Field\UploadField;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Storage;
+    use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ActivityController extends Controller
 {
@@ -42,7 +40,10 @@ class ActivityController extends Controller
            $content->body($this->form());
        });
    }
-
+   public  function getCatType(Request $request)
+   {
+       return $this->sendResponse($this->arrType, 200);
+   }
    public function getAllshopActiviy()
    {
        $allActivity = ShopActivity::where('active', 1)
@@ -146,6 +147,7 @@ class ActivityController extends Controller
      }
      $model = ShopActivity::findOrFail($id);
      $model->type = $arr['type'];
+     $model->cat_type  = $arr['cat_type'];
      $model->notes = $arr['notes'];
      $model->parent_id = $arr['parent_id'];
      if(isset($arr['icon'])){

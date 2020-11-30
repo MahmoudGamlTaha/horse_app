@@ -141,6 +141,9 @@ ALTER TABLE `champion_details_desc` ADD `video` VARCHAR(250) NULL AFTER `updated
 ALTER TABLE `champoines_desc` ADD `country` VARCHAR(250) NULL AFTER `name`;
 ALTER TABLE `companies` ADD `country` VARCHAR(250) NULL AFTER `logo`;
 ALTER TABLE `banner` ADD `title` VARCHAR(250) NULL AFTER `image`;
+--
+ALTER TABLE `champion_details_desc` ADD `horse_father` VARCHAR(250) NULL AFTER `horse_name`;
+
 
 
 

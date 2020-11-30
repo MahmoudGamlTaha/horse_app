@@ -72,4 +72,9 @@ Route::post('/removeFav', 'FavCart@removeCartFav')->name('removeFav');
 Route::post('/storeOrder', 'ShopCart@storeOrderMobile')->name('storeOrder');
 Route::post('/checkOut', 'ShopCart@MobileCheckout')->name('checkOut');
 Route::get('/champion', ['uses' => 'ChampionController@getChampiones']);
-
+Route::get('/search', ['uses' => 'MagazineTopicController@search']);
+Route::get('/champion/years',['uses' => 'ChampionController@getChampionesYears']);
+Route::get('/champion/filter', ['uses' => 'ChampionController@getChampioneFilterNameCountry']);
+Route::get('/countries', ['uses' => 'ChampionController@getCountryList']);
+Route::get('/vendorWithCatType', ['uses' => 'CompanyController@getAllShopWithCatType']);
+Route::get('/vendorCatType', ['uses' =>'ActivityController@getCatType']);

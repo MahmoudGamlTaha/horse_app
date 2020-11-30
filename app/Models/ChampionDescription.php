@@ -9,4 +9,11 @@ class ChampionDescription extends Model
 {
     
     public $table      = 'champoines_desc';
+
+    public function getCountries($lang_id)
+    {
+        $this->selectRaw("distict country")
+          ->where("lang_id", $lang_id)
+          ->pluck("country");
+    }
 }

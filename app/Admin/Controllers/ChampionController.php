@@ -7,6 +7,7 @@ use App\Models\Champion;
 use App\Models\ChampionDescription;
 use App\Models\ChampionDetails;
 use App\Models\ChampionDetailsDescription;
+use App\Models\Country;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -111,17 +112,50 @@ class ChampionController extends Controller
     public function getChampiones(Request $request){
         try{
             $type = $request->type??['CLASS','CHAMPION'];
+            $date = $request->date?? null;
             $lang_id = $request->lang_id ?? 1;
+            if($date != null && !is_numeric($date)){
+               return $this->sendError("error champion date");
+            }
             $champion = new Champion();
-      if(!is_array($type)){
-          $type = [$type];
-      }
-            $selected = $champion->getChampions($lang_id, $type);
+           if(!is_array($type)){
+             $type = [$type];
+            }
+            $selected = $champion->getChampions($lang_id, $type, $date);
             return $this->sendResponse($selected, 200);
                         
      }catch(\Exception $ex){
-         return $this->sendError("error", 400);
+         return $this->sendError("champion error ", 400);
       }
+  }
+  public function getChampionesYears(Request $request){
+    $champions = new Champion(); 
+    $years = $champions->getChampionsYears();
+    return $this->sendResponse($years, 200);
+  }
+  public function getChampioneFilterNameCountry(Request $request){
+    try{
+      $champion= new Champion();
+      $lang_id    = $request->lang_id ?? 1;
+      $country = $request->country?? null;
+      $title   = $request->title ?? ''; 
+      $data = $champion->getChampionsWithCriteria($lang_id, $country, $title);
+      return $this->sendResponse($data, 200);
+    }catch(\Exception $ex){
+        return $this->sendError($ex->getMessage(), 400);
+    }
+  }
+  public function getCountryList(Request $request){
+      $lang_id  = $request->lang_id ?? 1;
+     //$championDesc = new ChampionDescription();
+     //$result = $championDesc->getCountries($lang_id);
+     $result = Country::select('name','id')->where("active", 1)
+                        ->where('lang_id', $lang_id)
+                        ->get();
+     return $this->sendResponse($result, 200);
+  }
+  public function getChampionesByName(Request $request){
+
   }
   
     protected function form( $id = null)

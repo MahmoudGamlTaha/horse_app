@@ -4,7 +4,6 @@
  use App\Models\Company;
  use App\Models\ShopActivity;
  use App\Models\CompanyContact;
-use App\Models\ConfigGlobalDescription;
 use App\Models\Language;
 use App\Models\ShopProduct;
 use Encore\Admin\Form;
@@ -51,11 +50,20 @@ class CompanyController extends Controller
        return $this->sendResponse($allActivity, 200);
    }
 
-   public function getAllShopWithActivityId($activityId)
+   public function getAllShopWithActivityId(Request $request,$activityId)
    {
-    $allShopsWithActivity = Company::where("activity_id", $activityId)
+     
+      $allShopsWithActivity = Company::where("activity_id", $activityId)
                            ->get();
-    return $this->sendResponse($allShopsWithActivity, 200 );
+     return $this->sendResponse($allShopsWithActivity, 200 );
+   }
+   public function getAllShopWithCatType(Request $request)
+   {
+      $cat_type = $request->cat_type;
+      $activityList = ShopActivity::where('cat_type', $cat_type)->pluck("id");
+      $allShopsWithActivity = Company::whereIn("activity_id", $activityList)
+                           ->get();
+     return $this->sendResponse($allShopsWithActivity, 200 );
    }
 
    public function getCompanyProfile($companyId)
@@ -307,6 +315,8 @@ class CompanyController extends Controller
             });
           });
       }
+
+     
 //sprint 1
       function isValidIBAN ($iban) {
 

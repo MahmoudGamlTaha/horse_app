@@ -132,6 +132,24 @@ class MagazineTopicController extends Controller
         }
   }
   
+  public function search(Request $request){
+    try{
+        
+        if(!isset($request->param)){
+            $request->param = '';
+        }
+          $lang_id = $request->lang_id ?? 1;
+
+          $magazineTopic = new MagazineTopic();
+          $selected = $magazineTopic->searchMagazineTopic( $request->param, $lang_id);
+          
+          return $this->sendResponse($selected, 200);
+                      
+    }catch(\Exception $ex){
+       return $this->sendError("error", 400);
+    }
+  }
+  
     protected function form()
     {
      //   Admin::script($this->jsProcess());
