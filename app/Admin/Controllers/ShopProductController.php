@@ -320,32 +320,18 @@ class ShopProductController extends Controller
                     $form->ignore($arrFields);
                     $form->divide();
                 }
-              // $uofms = ProductPriceList::where('product_id', $idCheck)->pluck('id', 'uof_id');
-               
-            //select 
-               //$form->inlineForm()->addSelectItem(UofmGroups::all(), $uofms);
-              
-               
-//end language
+          
                 if(!$this->checkSuperUser())
                 {
-                  $arrBrand  = ShopBrand::where('company_id', $this->getUserCompany()[0]->id)->pluck('name', 'id')->all();
-                }
-                else {
-                    $arrBrand  = ShopBrand::pluck('name', 'id')->all();      
-                }
-                $arrBrand  = ['0' => '-- ' . trans('language.brands') . ' --'] + $arrBrand;
-                if(!$this->checkSuperUser())
-                {
-                  $arrVendor = ShopVendor::where('company_id', $this->getUserCompany()[0]->id)->pluck('name', 'id')->all();
+               //   $arrVendor = ShopVendor::where('company_id', $this->getUserCompany()[0]->id)->pluck('name', 'id')->all();
                   $arrCate = (new ShopCategory)->getTreeCategoriesForCompany($this->getUserCompany()[0]->id);
                 }
                 else{
-                    $arrVendor = ShopVendor::pluck('name','id')->all();
+            //        $arrVendor = ShopVendor::pluck('name','id')->all();
                     $companies = Company::pluck('name','id');
                     $arrCate = (new ShopCategory)->getTreeCategories();
                 }
-                $arrVendor = ['0' => '-- ' . trans('language.vendor') . ' --'] + $arrVendor;
+          //      $arrVendor = ['0' => '-- ' . trans('language.vendor') . ' --'] + $arrVendor;
                 
                 if($arrCate!=null || sizeof($arrCate) > 0)
                 {
@@ -362,8 +348,8 @@ class ShopProductController extends Controller
                 $form->image('image', trans('language.admin.image'))->uniqueName()->move('product');
                 $form->number('stock', trans('language.product.stock'))->rules('numeric|min:0')->default('0'); //sprint 1
             
-                $form->select('brand_id', trans('language.brands'))->options($arrBrand)->default('0')
-                    ->rules('required');
+            //    $form->select('brand_id', trans('language.brands'))->options($arrBrand)->default('0')
+              //      ->rules('required');
              //  $form->select('vendor_id', trans('language.vendor'))->options($arrVendor)->default('0')
                //     ->rules('required');
                 $form->switch('status', trans('language.admin.status'));

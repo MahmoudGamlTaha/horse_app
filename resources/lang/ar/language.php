@@ -297,7 +297,7 @@ return [
         'edit_product' => 'Edit product',
         'category'     => 'الصنف',
         'product_name' => 'اسم المنتج',
-        'product_type' => 'نوع المنتج',
+        'product_type' => 'حالة المنتج',
         'product_info' => 'بيانات المنتج',
         'price_cost'   => 'التكلفة',
         'stock'        => 'الكمية',
