@@ -78,7 +78,8 @@ class ShopProductController extends Controller
             $shopProductModel->status = $arr['status'] == 'on' ? 1 : 0;
             $shopProductModel->stock  = $arr['stock'];
             $shopProductModel->path = Storage::disk(config('admin.upload.disk'))->url('');
-            $shopProductModel->type = $arr['type']; 
+            $shopProductModel->type = $arr['type'];
+            $shopProductModel->reserve = $arr['reserve'] == 'on' ? 1 : 0;; 
       
           $company = null;
             if($this->checkSuperUser()){
@@ -100,7 +101,7 @@ class ShopProductController extends Controller
             }
            
             $shopProductModel->company_id = $company;
-            $shopProductModel->brand_id = $arr['brand_id'];
+         //   $shopProductModel->brand_id = $arr['brand_id'];
             $shopProductModel->date_available = $arr['date_available'];
 
             $shopProductModel->save();
@@ -353,6 +354,7 @@ class ShopProductController extends Controller
              //  $form->select('vendor_id', trans('language.vendor'))->options($arrVendor)->default('0')
                //     ->rules('required');
                 $form->switch('status', trans('language.admin.status'));
+                $form->switch('reserve', trans('language.admin.shapwa'));
                 $form->number('sort', trans('language.admin.sort'))->rules('numeric|min:0')->default(0);
                 $form->divide();
                 $form->radio('type', trans('language.product.product_type'))->options($this->arrType)->default('0');

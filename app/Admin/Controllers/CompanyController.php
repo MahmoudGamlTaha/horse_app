@@ -96,20 +96,20 @@ class CompanyController extends Controller
       if(!is_numeric($companyId) || !is_numeric($request->category_id)){
         return $this->sendError([], 400);
     }
+    $companyProducts = Company::findOrFail($companyId)
+    ->Products()
+    ->where('company_id',$companyId);
+    if(isset($request->type) && is_numeric($request->type)){
+         $companyProducts = $companyProducts->where("shop_product.reserve" ,$request->type);
+    }
     if($request->category_id  != 0){
-       $companyProducts = Company::findOrFail($companyId)
-       ->Products()
-       ->where('category_id', $request->category_id)
-       ->where('company_id',$companyId)
-       ->paginate(20);
-       return $this->sendResponse($companyProducts, 200);
-    }else{
-      $companyProducts = Company::findOrFail($companyId)
-      ->Products()
-      ->where('company_id',$companyId)
+       $companyProducts = $companyProducts 
+       ->where('company_id',$companyId);
+    }
+      $companyProducts = $companyProducts
       ->paginate(20);
       return $this->sendResponse($companyProducts, 200);
-    }
+    
      }catch(\Exception $e){
        return $this->sendError([], 400);
      }

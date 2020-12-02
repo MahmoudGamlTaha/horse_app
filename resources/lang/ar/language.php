@@ -170,6 +170,7 @@ return [
         'enable_https'                      => 'Enable https',
         'enable_log_admin'                  => 'Enable log admin',
         'enable_watermark'                  => 'Use Watermark',
+        'shapwa'                            => 'حجز شبوة',
         'use_coupon'                        => 'Use coupon',
         'use_shipping'                      => 'Use shipping',
         'show_date_available'               => 'Show date available',

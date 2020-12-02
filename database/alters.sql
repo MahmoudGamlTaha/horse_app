@@ -145,6 +145,9 @@ ALTER TABLE `banner` ADD `title` VARCHAR(250) NULL AFTER `image`;
 ALTER TABLE `champion_details_desc` ADD `horse_father` VARCHAR(250) NULL AFTER `horse_name`;
 ALTER TABLE `countries` ADD `lang_id` INT NULL DEFAULT '1' AFTER `name`;
 
+ALTER TABLE `shop_product` ADD `reserve` TINYINT NULL DEFAULT '0' AFTER `option`;
+
+
 
 
 
