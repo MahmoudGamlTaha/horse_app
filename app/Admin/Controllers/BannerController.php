@@ -117,8 +117,8 @@ class BannerController extends Controller
         $form->radio('type_id', trans('language.admin.banner_type'))->options($this->arrType)->default('0');
         if ($this->checkSuperUser()) {
             $companies = Company::pluck('name','id')->all();
-            $form->select('company_id', trans('admin.company'))->options($companies)
-            ->rules('required');
+			$form->html("<span>leave it empty and select slider to show it in slider company category</span>");
+            $form->select('company_id', trans('admin.company'))->options($companies);
         }
         $form->switch('status', trans('language.admin.status'));
         $form->number('sort', trans('language.admin.sort'))->rules('numeric|min:0')->default(0);
@@ -198,7 +198,7 @@ class BannerController extends Controller
       if (!$this->checkSuperUser()) {
           $banner->company_id =  $this->getUserCompany()[0]->id;
       }else{
-          $banner->company_id = $data['company_id'];
+          $banner->company_id = isset($data['company_id'])? $data['company_id'] : null;
       }
         $banner->save();
         return $this->detail($banner->id);
@@ -216,16 +216,21 @@ class BannerController extends Controller
         session()->flash('toastr', $toastr);
     }
     
-    function getBannerSlideShow(Request $request, $id){
-        if(!is_numeric($id) || !is_numeric($request->type)){
+    function getBannerSlideShow(Request $request){
+        if(!is_numeric($request->type)){
             return $this->sendError([], 400);
         }
        $type = $request->type;
-       $banners = Banner::where('status', true)
-                    ->where('company_id', $id)
-                    ->where('type_id', $type)
-                    ->get();
+       $banners = Banner::where('status', true);
+       $banners = $banners->where('type_id', $type);
+                   if($request->company_id != null && is_numeric($request->company_id)){
+                    $banners = $banners->where('company_id', $type);
+                   } else {
+                    $banners = $banners->whereNull('company_id');
+                   }
+                    $banners = $banners->get();
        return $this->sendResponse($banners,200);
     }
+
 
 }

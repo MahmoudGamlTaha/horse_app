@@ -43,10 +43,14 @@ class CompanyController extends Controller
        });
    }
 
-   public function getAllshopActiviy()
+   public function getAllshopActiviy(Request $request)
    {
        $allActivity = ShopActivity::where('active', 1)
-                      ->where('id', '!=', CompanyType::ALL)->get();
+                      ->where('id', '!=', CompanyType::ALL);//->get();
+                      if($request->cat_type != null){
+                        $allActivity  =  $allActivity->where('cat_type', $request->cat_type );
+                      }
+                      $allActivity = $allActivity->get(); 
        return $this->sendResponse($allActivity, 200);
    }
 
@@ -61,8 +65,12 @@ class CompanyController extends Controller
    {
       $cat_type = $request->cat_type;
       $activityList = ShopActivity::where('cat_type', $cat_type)->pluck("id");
-      $allShopsWithActivity = Company::whereIn("activity_id", $activityList)
-                           ->get();
+      $allShopsWithActivity = Company::whereIn("activity_id", $activityList);
+      
+      if($request->param != null){
+        $allShopsWithActivity = $allShopsWithActivity->whereRaw('name LIKE "'.$request->param.'%"');
+      }
+      $allShopsWithActivity = $allShopsWithActivity->get();
      return $this->sendResponse($allShopsWithActivity, 200 );
    }
 

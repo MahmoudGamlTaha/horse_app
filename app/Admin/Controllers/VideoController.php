@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Events;
 use App\Models\Video;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -128,6 +129,10 @@ class VideoController extends Controller
             $form->model()->company_id =  $company ;
             $form->model()->path = Storage::disk(config('admin.upload.disk'))->url('');
             $form->switch('active', trans('language.admin.status'));
+            if ($this->checkSuperUser()) {
+                $companies = Company::pluck('name','id')->all();
+                $form->select('company_id', trans('admin.company'))->options($companies);
+            }
             $form->disableViewCheck();
             $form->disableEditingCheck();
             $form->tools(function (Form\Tools $tools) {
@@ -164,6 +169,11 @@ class VideoController extends Controller
        if(isset($request->active)){
            $video->active = $request->active == "off"?0:1;
        }
+       if ($this->checkSuperUser()) {
+        $video->company_id = $request->company_id;
+      }else{
+        $video->company_id =  $this->getUserCompany()[0]->id;
+      }
       
        $video->save();
     }catch(\Exception $e){

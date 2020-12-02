@@ -44,11 +44,15 @@ class ActivityController extends Controller
    {
        return $this->sendResponse($this->arrType, 200);
    }
-   public function getAllshopActiviy()
+   public function getAllshopActiviy(Request $request)
    {
        $allActivity = ShopActivity::where('active', 1)
                                     ->where('id', '!=', CompanyType::ALL)
-                                    ->whereNull('parent_id')->get();
+                                    ->whereNull('parent_id');
+            if($request->cat_type != null){
+                $allActivity  =  $allActivity->where('cat_type', $request->cat_type );
+                }
+                $allActivity = $allActivity->get(); 
        return $this->sendResponse($allActivity, 200);
    }
    public function getSubCategoryShop(Request $request, $id){

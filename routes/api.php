@@ -53,7 +53,7 @@ Route::post('/login',['uses' => 'AuthController@postapiLogin']);
 Route::post('/logout', ['uses' => 'AuthController@logout']);
 Route::post('/register',['uses'=>'AuthController@postapiRegister']);
 
-Route::get('/slider/banners/{company}',['uses' => 'BannerController@getBannerSlideShow']);
+Route::get('/slider/banners',['uses' => 'BannerController@getBannerSlideShow']);
 
 Route::get('/vendor/categories/{company}',['uses' => 'ShopCategoryController@getCategories']);
 
@@ -78,3 +78,4 @@ Route::get('/champion/filter', ['uses' => 'ChampionController@getChampioneFilter
 Route::get('/countries', ['uses' => 'ChampionController@getCountryList']);
 Route::get('/vendorWithCatType', ['uses' => 'CompanyController@getAllShopWithCatType']);
 Route::get('/vendorCatType', ['uses' =>'ActivityController@getCatType']);
+Route::get('/vendorTreeCategory', ['uses' => 'ShopCategoryController@ShopCategoryController@getTreeCategories']);

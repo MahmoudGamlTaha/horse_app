@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Support\Facades\Storage;
+use Encore\Admin\Form\Field\Image;
 
 class AuthController extends Controller
 {
@@ -278,6 +280,13 @@ class AuthController extends Controller
             $user->lname    = $credentials['lname'];
             $user->name     = $credentials['name'];
             $user->seller_type = 0;
+            if(isset($userData["avatar"])){
+                $image = new Image($userData["avatar"]);
+                $image->uniqueName();
+                $image->move("ImgProfile");
+                $user->avatar = $image->prepare($userData['avatar']);
+                $user->path = Storage::disk(config('admin.upload.disk'))->url('');
+            }  
            if($user->save()){ 
             $sendUser = clone $user;
             $sendUser->password = '';

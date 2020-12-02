@@ -160,7 +160,7 @@ class ChampionController extends Controller
   
     protected function form( $id = null)
     {
-     //   Admin::script($this->jsProcess());
+     //   Admin::script($this->jsProcess())
         return Admin::form(Champion::class, function (Form $form) {
             $languages = Language::getLanguages();
         $form->tab(trans("language.champoines.champoines"), function ($form) use($languages){
@@ -198,6 +198,9 @@ class ChampionController extends Controller
                // dd($ChampionDetailsDescription);
                if($idCheck){
                 $langDescriptions =  ChampionDescription::where("champion_id", $idCheck)->where("lang_id", $language->id)->first();
+                if($langDescriptions == null){
+                    $langDescriptions = new ChampionDescription();
+                }
                }
                 $form->html('<span>'.$language->name.'</span>');
                 $form->text($language->code . '__name', trans('language.champoines.champoine'))->rules('required', ['required' => trans('validation.required')])->default(!empty($langDescriptions->name) ? $langDescriptions->name : null);
@@ -271,9 +274,12 @@ class ChampionController extends Controller
         })->tab(trans('language.champoines.horse_win'), function($form) use($languages){
             $arrParameters = request()->route()->parameters();
             $idCheck       = (int) end($arrParameters);
-          $form->hasMany('details', function (Form\NestedForm $form) use($languages, $idCheck){
+          $form->hasMany('meta_data', function (Form\NestedForm $form) use($languages, $idCheck){
             $arrayDetails = array();
             $championDetails =  ChampionDetails::where('champion_id', $idCheck)->first();
+            if($championDetails == null){
+                $championDetails =  new ChampionDetails();
+            }
             $ChampionDetailsDescription = new ChampionDetailsDescription();
             $form->image('horse_image', trans('language.champoines.horse_image'));//->uniqueName()->move('horse_images');
             $form->radio('grade', trans('language.champoines.grade'))->options($this->grades);//->default($championDetails->grade);
@@ -281,6 +287,9 @@ class ChampionController extends Controller
                 if ($idCheck) {
                     $langDescriptions = ChampionDescription::where('champion_id', $idCheck)->where('lang_id', $language->id)->first();
                     $ChampionDetailsDescription = ChampionDetailsDescription::where('champion_id', $idCheck)->where("lang_id", $language->id)->first();
+                    if($ChampionDetailsDescription == null){
+                        $ChampionDetailsDescription = new ChampionDetailsDescription();
+                    }
                     $form->hidden($language->code.'__detail_desc_id', '')->default($ChampionDetailsDescription->id);
                     $form->hidden($language->code.'__detail_id', '')->default($championDetails->id); //  remove and dependacny 
                 }
@@ -372,7 +381,7 @@ class ChampionController extends Controller
                    // $arrDetailsDesc[$language->code]['description'] = $detail[$language->code . '__description'];
                     $arrDetailsDesc[$language->code]['horse_name'] =   $detail[$language->code . '__horse_name'];
                     $arrDetailsDesc[$language->code]['champion_id'] =  $id;
-                  
+                    dd($detail);
                     $detail_desc_id =  $detail[$language->code . '__detail_desc_id'];
                     $detail_id = $detail[$language->code . '__detail_id'];
                     if($detail_desc_id != null){

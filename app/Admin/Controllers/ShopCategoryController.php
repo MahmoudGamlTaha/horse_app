@@ -216,7 +216,21 @@ class ShopCategoryController extends Controller
 
     public function getCategories(Request $request, $id){
         if(!is_numeric($id)){
-            return $this->sendError("estable Error");
+            return $this->sendError("estable category Error", 400);
+        }
+    
+         $categories = ShopCategory::query()->where('status', true)
+       //  ->groupBy('parent')
+                      ->where('company_id', $id)
+                    
+                      ->paginate(20);
+
+       return $this->sendResponse($categories, 200);               
+    }
+    
+    public function getTreeCategories(Request $request, $id){
+        if(!is_numeric($id)){
+            return $this->sendError("estable category Error", 400);
         }
     
          $categories = ShopCategory::query()->where('status', true)
