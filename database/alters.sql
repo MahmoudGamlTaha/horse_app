@@ -148,7 +148,7 @@ ALTER TABLE `countries` ADD `lang_id` INT NULL DEFAULT '1' AFTER `name`;
 ALTER TABLE `shop_product` ADD `reserve` TINYINT NULL DEFAULT '0' AFTER `option`;
 
 
+ALTER TABLE `champoines` ADD `end_date` TIMESTAMP NULL AFTER `date`;
 
-
-
-
+ALTER TABLE `champoines` ADD `longitude` VARCHAR(200) NULL AFTER `path`, ADD `latitude` VARCHAR(200) NULL AFTER `longitude`, ADD `contact_mails` VARCHAR(300) NULL AFTER `latitude`;
+ALTER TABLE `champoines_desc` ADD `address` VARCHAR(200) NULL AFTER `organizer`;

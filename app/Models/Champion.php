@@ -11,12 +11,7 @@ class Champion extends Model
     public $table      = 'champoines';
 
     public function meta_data(){
-        $relation = $this->hasMany(ChampionDescription::class, 'champion_id', 'id');
-        if($relation){
-          
-            return $relation;
-        } 
-        return null;
+       return $this->hasMany(ChampionDescription::class, 'champion_id', 'id');
     }
     public function result(){
         return $this->hasMany(ChampionDetails::class, 'champion_id', 'id')->with("description");

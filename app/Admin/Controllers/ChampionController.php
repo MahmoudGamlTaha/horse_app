@@ -88,7 +88,7 @@ class ChampionController extends Controller
             $grid->id(trans('language.admin.sort'))->sortable();
             $grid->name(trans('language.champoines.champoine'));
             $grid->image(trans('language.champoines.image'))->image('', 50);
-            $grid->short_description(trans('language.champoine.short_desc'));
+            $grid->short_description(trans('language.champoines.short_desc'));
             $grid->active(trans('language.admin.status'))->switch();
             $grid->date(trans('language.champoines.date'));
             $grid->created_at(trans('language.admin.created_at'));
@@ -179,10 +179,15 @@ class ChampionController extends Controller
              
           }
             $form->image('image', trans('language.champoines.image'));
-            $form->date('date');
+            $form->datetime('date', trans('language.champoines.start_date'));
+            $form->datetime('end_date', trans('language.champoines.end_date'));
          //   dd($championDetails->horse_image);
          //   $form->html("<div class='form-group'><img src='".$championDetails->path.''.$championDetails->horse_image."'><img></div>");
             $form->radio('type', trans('language.champoines.type'))->options($this->types)->default('CHAMPOINE');
+            $form->text('longitude', trans('language.champoines.longitude'));
+            $form->text('latitude', trans('language.champoines.latitude'));
+            $form->text('organizer', trans('language.champoines.organizer'));
+            $form->text('contact_mails', trans('language.champoines.contact_mails'));
             $form->model()->company_id =  $company ;
             $form->model()->path = Storage::disk(config('admin.upload.disk'))->url('');
             $form->switch('active', trans('language.admin.status'));
@@ -274,15 +279,18 @@ class ChampionController extends Controller
         })->tab(trans('language.champoines.horse_win'), function($form) use($languages){
             $arrParameters = request()->route()->parameters();
             $idCheck       = (int) end($arrParameters);
-          $form->hasMany('meta_data', function (Form\NestedForm $form) use($languages, $idCheck){
+          $form->hasMany('meta_data',' ', function (Form\NestedForm $form) use($languages, $idCheck){
             $arrayDetails = array();
             $championDetails =  ChampionDetails::where('champion_id', $idCheck)->first();
+            
             if($championDetails == null){
                 $championDetails =  new ChampionDetails();
             }
             $ChampionDetailsDescription = new ChampionDetailsDescription();
-            $form->image('horse_image', trans('language.champoines.horse_image'));//->uniqueName()->move('horse_images');
-            $form->radio('grade', trans('language.champoines.grade'))->options($this->grades);//->default($championDetails->grade);
+            $form->image('horse_image', trans('language.champoines.horse_image'))->appendAttribute($championDetails->horse_image);//->uniqueName()->move('horse_images');
+            $form->radio('grade', trans('language.champoines.grade'))->options($this->grades)->default($championDetails->grade);
+            $form->url('video', trans('language.champoines.video'))->default($championDetails->video);
+            $form->image('video_image', trans('language.champoines.video_image'))->appendAttribute($championDetails->video_image);
             foreach ($languages as $key => $language) {
                 if ($idCheck) {
                     $langDescriptions = ChampionDescription::where('champion_id', $idCheck)->where('lang_id', $language->id)->first();
@@ -295,6 +303,10 @@ class ChampionController extends Controller
                 }
                  $form->html('<span>'.$language->name.'</span>');
                  $form->text($language->code . '__horse_name', trans('language.champoines.horse_name'))->rules('required', ['required' => trans('validation.required')])->default(!empty($ChampionDetailsDescription->horse_name) ? $ChampionDetailsDescription->horse_name : null);
+                 $form->text($language->code . '__instructor', trans('language.champoines.instructor'))->rules('required', ['required' => trans('validation.required')])->default(!empty($ChampionDetailsDescription->instructor) ? $ChampionDetailsDescription->instructor : null);
+                 $form->text($language->code . '__owner', trans('language.champoines.owner'))->rules('required', ['required' => trans('validation.required')])->default(!empty($ChampionDetailsDescription->owner) ? $ChampionDetailsDescription->owner : null);
+                 $form->text($language->code . '__horse_father', trans('language.champoines.horse_father'))->rules('required', ['required' => trans('validation.required')])->default(!empty($ChampionDetailsDescription->horse_father) ? $ChampionDetailsDescription->horse_father : null);
+                 $form->text($language->code . '__color', trans('language.champoines.color'))->rules('required', ['required' => trans('validation.required')])->default(!empty($ChampionDetailsDescription->color) ? $ChampionDetailsDescription->color : null);
                 
             }            
             $form->saving(function (Form $form) use ($languages, &$arrData, $arrayDetails) {
@@ -342,11 +354,17 @@ class ChampionController extends Controller
             $arrDetails = array();
             $arrDetailsDesc = array();
             DB::BeginTransaction();
+            if(isset($updateData['meta_data'])){
+                ChampionDetailsDescription::where("champion_id", $id)->delete();
+            }
+               ChampionDescription::where("champion_id", $id)->delete();           
+            $detail_id = 0;
+
             foreach ($languages as $key => $language) {
                 if ($idCheck) {
                     $championDescription = ChampionDescription::where('champion_id', $idCheck)->where('lang_id', $language->id)->first();
-                   
                 }
+                
                 if ($languages->count() > 1) { // no need if one language used
                 }
                 if(!$this->checkSuperUser())
@@ -362,49 +380,59 @@ class ChampionController extends Controller
                  $arrFields[$language->code]['name'] =  $updateData[$language->code . '__name'];
                  $arrFields[$language->code]['description'] =  $updateData[$language->code . '__description'];
                 
-                 if(isset($updateData['horse_image'])){
-                 $arrFields[$language->code]['horse_image'] = $updateData['horse_image'];
-                 }
+               
                  $arrFields[$language->code]['champion_id'] = $id;
-                 $arrFields[$language->code]['created_at']= $championDescription->created_at;
-                 $arrFields[$language->code]['company_id'] = $company_id;
+                 $arrFields[$language->code]['created_at']= $championDescription->created_at??date('Y-m-d h:i:s');
+                 $arrFields[$language->code]['company_id'] = $company_id;                
                 
-                 $arrDetails[$language->code]['champion_id'] = $id;
-            
                  $arrDetailsDesc[$language->code]['lang_id'] = $language->id;
                  $arrDetailsDesc[$language->code]['company_id'] = $company_id;
-                 if(isset($updateData['details'])){
-                    $list = $updateData['details'];
+               //  dd($updateData);
+                 if(isset($updateData['meta_data'])){
+                    $list = $updateData['meta_data'];
                      foreach($list as $key=> $detail){
-                     //    dd($list);
-                    $arrDetails[$language->code]['grade'] = $detail['grade']; 
-                   // $arrDetailsDesc[$language->code]['description'] = $detail[$language->code . '__description'];
-                    $arrDetailsDesc[$language->code]['horse_name'] =   $detail[$language->code . '__horse_name'];
-                    $arrDetailsDesc[$language->code]['champion_id'] =  $id;
-                    dd($detail);
-                    $detail_desc_id =  $detail[$language->code . '__detail_desc_id'];
-                    $detail_id = $detail[$language->code . '__detail_id'];
-                    if($detail_desc_id != null){
-                        
-                        ChampionDetailsDescription::where("champion_id", $id)->where("id", $detail_desc_id )
-                       ->update($arrDetailsDesc[$language->code]);
-                       }else{
-                         ChampionDetailsDescription::insert($arrDetailsDesc[$language->code]);
-                       }
+                       
+                        $arrDetailsDesc[$language->code]['horse_name'] =   $detail[$language->code . '__horse_name'];
+                        $arrDetailsDesc[$language->code]['champion_id'] =  $id;
+                        $arrDetailsDesc[$language->code]['company_id'] =  $company_id;
+                        $arrDetailsDesc[$language->code]['horse_father'] =$detail[$language->code . '__horse_father'];
+                        $arrDetailsDesc[$language->code]['owner'] = $detail[$language->code . '__owner'];
+                        $arrDetailsDesc[$language->code]['instructor'] = $detail[$language->code . '__instructor'];
+                        $arrDetailsDesc[$language->code]['color'] = $detail[$language->code . '__color'];
+                        if(!$detail_id){
+                            $arrDetails['champion_id'] = $id;
+                            $arrDetails['company_id'] = $company_id;
+                            $arrDetails['grade'] = $detail['grade'];
+                            $arrDetails['path'] =  Storage::disk(config('admin.upload.disk'))->url('');
+                            $arrDetails['video'] = $detail['video'];
+                            if(isset($detail['video_image'])){
+                               $videoImage = new Image($detail['video_image']);
+                               $videoImage->uniqueName();
+                               $videoImage->move('horse_images_champion_'.$id);
+                               $arrDetails['video_image']  =$videoImage->prepare($detail['video_image']);
+                            }
+                            else if(isset($detail[$language->code . '__detail_id'])){
+                                $data = ChampionDetails::findOrFail($detail[$language->code . '__detail_id']);
+                                $arrDetails['video_image'] = $data->video_image;
+                            }
+                            if(isset($detail['horse_image'])){
+                                $horseImage = new Image($detail['horse_image']);
+                                $horseImage->uniqueName();
+                                $horseImage->move('horse_images_champion_'.$id);
+                                $arrDetails['horse_image'] =$horseImage->prepare($detail['horse_image']);
+                                  
+                            }else if(isset($detail[$language->code . '__detail_id'])){
+                                $data = ChampionDetails::findOrFail($detail[$language->code . '__detail_id']);
+                                $arrDetails['horse_image'] = $data->horse_image;
+                            }
+                            ChampionDetails::where("champion_id", $id)->delete();
+                            $detail_id = ChampionDetails::insertGetId($arrDetails); 
+                        }
+                        $arrDetailsDesc[$language->code]['champion_detail_id'] =  $detail_id;
+                        ChampionDetailsDescription::insert($arrDetailsDesc[$language->code]);    
                   }
                  }
-            //     dd($updateData);
-                 // ChampionDescription::where("champion_id", $id)->delete();
-                 $ch_desc_id = $updateData[$language->code .'__champion_desc_id']; 
-               //  dd($updateData);
-                  ChampionDescription::where("id", $ch_desc_id)->update($arrFields[$language->code]);
-                 // ChampionDetailsDescription::where("champion_id", $id)->delete();
-                  if($detail_id != null){
-                    ChampionDetails::where("champion_id", $id)->where("id", $detail_id)->update($arrDetails[$language->code]);      
-                  }else{
-                    ChampionDetails::insert($arrDetails[$language->code]);
-                  }
-                
+                   
             }
             //
       

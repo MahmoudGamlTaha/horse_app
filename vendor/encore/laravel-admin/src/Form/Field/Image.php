@@ -37,4 +37,8 @@ class Image extends File
 
         return $this->uploadAndDeleteOriginal($image);
     }
+
+    public function appendAttribute($title = null){
+      $this->value = $title;
+    }
 }
