@@ -152,3 +152,9 @@ ALTER TABLE `champoines` ADD `end_date` TIMESTAMP NULL AFTER `date`;
 
 ALTER TABLE `champoines` ADD `longitude` VARCHAR(200) NULL AFTER `path`, ADD `latitude` VARCHAR(200) NULL AFTER `longitude`, ADD `contact_mails` VARCHAR(300) NULL AFTER `latitude`;
 ALTER TABLE `champoines_desc` ADD `address` VARCHAR(200) NULL AFTER `organizer`;
+ALTER TABLE `champoines_desc` CHANGE `name` `name` VARCHAR(255) CHARACTER SET utf32 COLLATE utf32_general_ci NULL;
+
+ALTER TABLE `banner` ADD `album` INT NULL DEFAULT '0' AFTER `path`;
+ALTER TABLE `banner` ADD `parent_id` INT NULL AFTER `album`;
+
+

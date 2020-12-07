@@ -79,15 +79,16 @@ class BannerController extends Controller
         $grid = new Grid(new Banner);
         $grid->id('ID')->sortable();
         $grid->image(trans('language.admin.image'))->image('', 50);
-        $grid->url('URL');
+        $grid->title(trans('language.images.title'));
+   //     $grid->url('URL');
         if(!$this->checkSuperUser()){
             $grid->company_id = $this->getUserCompany()[0]->id;
         }
        // print_r((new Banner())->type()->get());die;
         //$grid->type()->name_ar('type');
-        $grid->html('HTML')->display(function ($text) {
-            return htmlentities($text);
-        })->style('max-width:200px;word-break:break-all;');
+      //  $grid->html('HTML')->display(function ($text) {
+       //     return htmlentities($text);
+       // })->style('max-width:200px;word-break:break-all;');
         $grid->status(trans('language.admin.status'))->switch();
         $grid->sort(trans('language.admin.sort'))->sortable();
         $grid->disableRowSelector();
@@ -111,9 +112,11 @@ class BannerController extends Controller
     {  
         try{
         $form = new Form(new Banner);
+        $form->tab(trans('language.admin.image'), function ($form) {
         $form->image('image', trans('language.admin.image'))->uniqueName()->move('banner')->removable();
-        $form->textarea('html', 'html');
-        $form->text('url', 'Url');
+         //$form->textarea('html', 'html');
+        //$form->url('url', 'Url');
+        $form->text('title', trans('language.images.title'));
         $form->radio('type_id', trans('language.admin.banner_type'))->options($this->arrType)->default('0');
         if ($this->checkSuperUser()) {
             $companies = Company::pluck('name','id')->all();
@@ -121,6 +124,7 @@ class BannerController extends Controller
             $form->select('company_id', trans('admin.company'))->options($companies);
         }
         $form->switch('status', trans('language.admin.status'));
+        $form->switch('album', trans('language.images.album'));
         $form->number('sort', trans('language.admin.sort'))->rules('numeric|min:0')->default(0);
          $form->disableViewCheck();
         $form->disableEditingCheck();
@@ -139,6 +143,13 @@ class BannerController extends Controller
         $form->tools(function (Form\Tools $tools) {
             $tools->disableView();
         });
+    });
+        $form->tab(trans('language.admin.sub_image'), function ($form) {
+            $form->hasMany('images', ' ', function (Form\NestedForm $form) {
+                $form->image('image', trans('language.admin.sub_image'))->uniqueName()->move('album_images');
+                $form->text('title', trans('language.images.title'));
+             } );
+            });
         return $form;
     } catch(\Exception $ex){
 
@@ -179,13 +190,15 @@ class BannerController extends Controller
          if(isset($data['html']))
            $banner->html = $data['html'];
         
-        if(isset($data['url']))
-           $banner->url = $data['url'];
+        if(isset($data['title']))
+           $banner->title = $data['title'];
         if(isset($data['type_id']))
            $banner->type_id = $data['type_id'];
           
            if(isset($request->status))
            $banner->status =$request->status == 'on'? 1 : 0;
+           if(isset($request->album))
+           $banner->album =$request->album == 'on'? 1 : 0;
            
         if(isset($request->image)){
             $banner->path =  Storage::disk(config('admin.upload.disk'))->url('');
@@ -200,6 +213,24 @@ class BannerController extends Controller
       }else{
           $banner->company_id = isset($data['company_id'])? $data['company_id'] : null;
       }
+         $images = $request->images;
+        // dd($request->all());
+        if(isset($images)){
+            Banner::where("parent_id", $id)->delete();
+          foreach($images as $key => $image){
+            $innerBanner = new Banner();
+            $banner->title = $image['title'];
+            if(isset($image->image)){
+                $innerBanner->path =  Storage::disk(config('admin.upload.disk'))->url('');
+                $uploadedImage = new Image( $image['image']) ;
+                $uploadedImage->uniqueName();
+                $uploadedImage->move('banner_album_'.$id);
+                $innerBanner->image = $uploadedImage->prepare($image['image']);
+                $innerBanner->parent_id = $id;
+                $innerBanner->save();
+            }
+          }
+        }
         $banner->save();
         return $this->detail($banner->id);
     }

@@ -186,7 +186,6 @@ class ChampionController extends Controller
             $form->radio('type', trans('language.champoines.type'))->options($this->types)->default('CHAMPOINE');
             $form->text('longitude', trans('language.champoines.longitude'));
             $form->text('latitude', trans('language.champoines.latitude'));
-            $form->text('organizer', trans('language.champoines.organizer'));
             $form->text('contact_mails', trans('language.champoines.contact_mails'));
             $form->model()->company_id =  $company ;
             $form->model()->path = Storage::disk(config('admin.upload.disk'))->url('');
@@ -207,8 +206,12 @@ class ChampionController extends Controller
                     $langDescriptions = new ChampionDescription();
                 }
                }
+                $countries = Country::where("active", 1)->where("lang_id", $language->id)->pluck("name", "id");
                 $form->html('<span>'.$language->name.'</span>');
                 $form->text($language->code . '__name', trans('language.champoines.champoine'))->rules('required', ['required' => trans('validation.required')])->default(!empty($langDescriptions->name) ? $langDescriptions->name : null);
+                $form->text($language->code .'__organizer', trans('language.champoines.organizer'))->default($langDescriptions->organizer);
+                $form->text($language->code .'__address', trans('language.champoines.address'))->default($langDescriptions->address);
+                $form->select($language->code.'__country', trans('language.championes.country'))->options($countries);
                 $form->ckeditor($language->code . '__description', trans('language.admin.description'))->default($langDescriptions->description);//->rules('max:300', ['max' => trans('validation.max')])->default(!empty($langDescriptions->description) ? $langDescriptions->description : null);
                 $form->hidden($language->code ."__champion_desc_id")->default($langDescriptions->id);
                 $arrFields[] = $language->code . '__name';
@@ -347,7 +350,6 @@ class ChampionController extends Controller
        $updateData = $request->all();
        $idCheck = $id;
        $detail_id = null;
-       $ch_desc_id = 0;
        //
        $languages = Language::getLanguages();
             $arrFields = array();
@@ -375,14 +377,20 @@ class ChampionController extends Controller
                 if(!isset($updateData[$language->code . '__name'])){
                 //    continue;
                 }
-                
+                $championModel->end_date = $updateData['end_date'];
+                $championModel->date = $updateData['date'];
+                $championModel->contact_mails = $updateData['contact_mails'];
+                $championModel->longitude = $updateData['longitude'];
+                $championModel->latitude = $updateData['latitude'];
+                $championModel->type = $updateData['type'];
               //  dd($updateData);
-                 $arrFields[$language->code]['name'] =  $updateData[$language->code . '__name'];
+                 $arrFields[$language->code]['name']        =  $updateData[$language->code . '__name'];
                  $arrFields[$language->code]['description'] =  $updateData[$language->code . '__description'];
-                
-               
+                 $arrFields[$language->code]['address']     =  $updateData[$language->code . '__address'];
+                 $arrFields[$language->code]['organizer']   =  $updateData[$language->code . '__organizer'];
+                 $arrFields[$language->code]['lang_id'] = $language->id;                
                  $arrFields[$language->code]['champion_id'] = $id;
-                 $arrFields[$language->code]['created_at']= $championDescription->created_at??date('Y-m-d h:i:s');
+               //  $arrFields[$language->code]['created_at']= $championDescription->created_at??date('Y-m-d h:i:s');
                  $arrFields[$language->code]['company_id'] = $company_id;                
                 
                  $arrDetailsDesc[$language->code]['lang_id'] = $language->id;
@@ -432,10 +440,15 @@ class ChampionController extends Controller
                         ChampionDetailsDescription::insert($arrDetailsDesc[$language->code]);    
                   }
                  }
-                   
+                 ChampionDescription::insert($arrFields);
             }
             //
-      
+            if(isset($updateData['image'])){
+                $Image = new Image($updateData['image']);
+                $Image->uniqueName();
+                $Image->move('horse_images_champion_'.$id);
+                $championModel->image =$Image->prepare($updateData['image']);
+             }
        if(isset($request->status)){
            $championModel->status = $request->status == "Off"?0:1;
        }

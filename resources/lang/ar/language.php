@@ -61,6 +61,10 @@ return [
     'products_special'   => 'Special products',
     'products_last_view' => 'Products recently viewed',
     'wishlist_products'  => 'المنتجات المفضلة',
+    'images'             =>[
+     'title'             => 'الصورة/الالبوم',
+      'album'            =>  'ألبوم؟'
+    ],         
     'ViewAll'          => 'رؤية الكل',
     'subscribe'          => [
         'manager'           => 'Subscribe manager',
@@ -125,7 +129,9 @@ return [
         'horse_name'  => 'اسم الحصان',
         'date'        => 'تاريخ البطولة',
         'type'       =>  'نوع البطولة',
-        'horse_win'  => 'الاحصنة الفائزة'
+        'horse_win'  => 'الاحصنة الفائزة',
+        'address'   =>   'العنوان',
+        'country'  =>    'الدولة'
     ],
     'video' =>[
       'create' => 'انشاء فديو',
