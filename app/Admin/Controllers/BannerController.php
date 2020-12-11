@@ -147,7 +147,10 @@ class BannerController extends Controller
                 }else{
                     $album = new Banner();
                 }
-               
+                $form->hasMany('images', ' ', function (Form\NestedForm $form) {
+                    $form->image('image', trans('language.admin.sub_image'));//->uniqueName()->move('product_images');
+                    $form->text('title', trans('language.images.title'))->default($value->title?? '');
+                });
                 if(is_array($album)){
                 foreach($album as $key => $value){
                   $form->image('image', trans('language.admin.sub_image'))->appendAttribute($value->image?? '');//->uniqueName()->move('album_images');
@@ -158,7 +161,7 @@ class BannerController extends Controller
             });
         return $form;
     } catch(\Exception $ex){
-         return $this->sendError($ex->getMessage(), 400);
+         return $ex->getMessage();
     }
     }
 
