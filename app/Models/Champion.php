@@ -13,10 +13,15 @@ class Champion extends Model
     public function meta_data(){
        return $this->hasMany(ChampionDescription::class, 'champion_id', 'id');
     }
+    public function info(){
+        return $this->hasMany(ChampionDescription::class, 'champion_id', 'id');
+     }
     public function result(){
         return $this->hasMany(ChampionDetails::class, 'champion_id', 'id')->with("description");
     }
-
+    public function classes_happen(){
+        return $this->hasMany(Champion::class, "parent_id", "id")->with("result");
+    }
     public function getChampions($lang_id, $type, $date){
         $str = '';
         if($date == null){
@@ -33,6 +38,7 @@ class Champion extends Model
                 $query->where("lang_id", $lang_id);
             }])
             ->with("result")
+            ->with("classes_happen")
             ->paginate(20);
         //    dd(\DB::getQueryLog());
     }

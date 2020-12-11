@@ -111,6 +111,9 @@ class BannerController extends Controller
     public function form($id = null)
     {  
         try{
+            $arrParameters = request()->route()->parameters();
+            if($id == null)
+                $id  = (int) end($arrParameters);
         $form = new Form(new Banner);
         $form->tab(trans('language.admin.image'), function ($form) {
         $form->image('image', trans('language.admin.image'))->uniqueName()->move('banner')->removable();
@@ -131,28 +134,31 @@ class BannerController extends Controller
         
         $form->saving(function (Form $form)  {
            $form->model()->path = Storage::disk(config('admin.upload.disk'))->url('');
-           if($form->model()->type_id == 2){
-               $count = Banner::where('type_id', 2)->where('status', 1)->count();
-               if($count >= 3){
-                $this->admin_toastr("you can't add more 3 image  home3ads ", 'error');
-                  die;
-               }
-                
-           }
         });
         $form->tools(function (Form\Tools $tools) {
             $tools->disableView();
         });
     });
-        $form->tab(trans('language.admin.sub_image'), function ($form) {
-            $form->hasMany('images', ' ', function (Form\NestedForm $form) {
-                $form->image('image', trans('language.admin.sub_image'))->uniqueName()->move('album_images');
-                $form->text('title', trans('language.images.title'));
-             } );
+        $form->tab(trans('language.admin.sub_image'), function ($form) use($id) {
+                $album = null;
+                if($id != null){
+                   $album = Banner::where("parent_id", $id)->get()->toArray();
+                //   dd(gettype(($album)));
+                }else{
+                    $album = new Banner();
+                }
+               
+                if(is_array($album)){
+                foreach($album as $key => $value){
+                  $form->image('image', trans('language.admin.sub_image'))->appendAttribute($value->image?? '');//->uniqueName()->move('album_images');
+                  $form->text('title', trans('language.images.title'))->default($value->title?? '');
+                }
+                }
+       
             });
         return $form;
     } catch(\Exception $ex){
-
+         return $this->sendError($ex->getMessage(), 400);
     }
     }
 
@@ -220,7 +226,9 @@ class BannerController extends Controller
           foreach($images as $key => $image){
             $innerBanner = new Banner();
             $banner->title = $image['title'];
-            if(isset($image->image)){
+            
+            if(isset($image['image']) && isset($image['image']) != null){
+                
                 $innerBanner->path =  Storage::disk(config('admin.upload.disk'))->url('');
                 $uploadedImage = new Image( $image['image']) ;
                 $uploadedImage->uniqueName();
@@ -259,6 +267,7 @@ class BannerController extends Controller
                    } else {
                     $banners = $banners->whereNull('company_id');
                    }
+                   $banners = $banners->with('images');
                     $banners = $banners->get();
        return $this->sendResponse($banners,200);
     }

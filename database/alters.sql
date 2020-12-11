@@ -157,4 +157,7 @@ ALTER TABLE `champoines_desc` CHANGE `name` `name` VARCHAR(255) CHARACTER SET ut
 ALTER TABLE `banner` ADD `album` INT NULL DEFAULT '0' AFTER `path`;
 ALTER TABLE `banner` ADD `parent_id` INT NULL AFTER `album`;
 
+ALTER TABLE `champoines` ADD `parent_id` INT NULL AFTER `type`;
+ALTER TABLE `champoines` CHANGE `type` `type` ENUM('CHAMPION','CLASS','','') CHARACTER SET utf32 COLLATE utf32_general_ci NOT NULL;
+
 

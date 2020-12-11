@@ -62,7 +62,7 @@ return [
     'products_last_view' => 'Products recently viewed',
     'wishlist_products'  => 'المنتجات المفضلة',
     'images'             =>[
-     'title'             => 'الصورة/الالبوم',
+     'title'             => 'اسم الصورة/الالبوم',
       'album'            =>  'ألبوم؟'
     ],         
     'ViewAll'          => 'رؤية الكل',
@@ -131,7 +131,8 @@ return [
         'type'       =>  'نوع البطولة',
         'horse_win'  => 'الاحصنة الفائزة',
         'address'   =>   'العنوان',
-        'country'  =>    'الدولة'
+        'country'  =>    'الدولة',
+        'champion_parent' => 'البطولة الرئيسية'
     ],
     'video' =>[
       'create' => 'انشاء فديو',

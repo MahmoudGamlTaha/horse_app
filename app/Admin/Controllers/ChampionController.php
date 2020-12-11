@@ -178,6 +178,9 @@ class ChampionController extends Controller
            //   $championDetails = ChampionDetails::where("champion_id", $idCheck)->first();
              
           }
+        $championsList = Champion::where("type", "CHAMPION")
+                     ->join("champoines_desc", "champoines_desc.champion_id","=", "champoines.id")
+                     ->pluck("champoines_desc.name", "champoines.id");
             $form->image('image', trans('language.champoines.image'));
             $form->datetime('date', trans('language.champoines.start_date'));
             $form->datetime('end_date', trans('language.champoines.end_date'));
@@ -187,6 +190,7 @@ class ChampionController extends Controller
             $form->text('longitude', trans('language.champoines.longitude'));
             $form->text('latitude', trans('language.champoines.latitude'));
             $form->text('contact_mails', trans('language.champoines.contact_mails'));
+            $form->select('parent_id', trans('language.champoines.champion_parent'))->options($championsList);
             $form->model()->company_id =  $company ;
             $form->model()->path = Storage::disk(config('admin.upload.disk'))->url('');
             $form->switch('active', trans('language.admin.status'));
@@ -211,7 +215,7 @@ class ChampionController extends Controller
                 $form->text($language->code . '__name', trans('language.champoines.champoine'))->rules('required', ['required' => trans('validation.required')])->default(!empty($langDescriptions->name) ? $langDescriptions->name : null);
                 $form->text($language->code .'__organizer', trans('language.champoines.organizer'))->default($langDescriptions->organizer);
                 $form->text($language->code .'__address', trans('language.champoines.address'))->default($langDescriptions->address);
-                $form->select($language->code.'__country', trans('language.championes.country'))->options($countries);
+                $form->select($language->code.'__country', trans('language.champoines.country'))->options($countries);
                 $form->ckeditor($language->code . '__description', trans('language.admin.description'))->default($langDescriptions->description);//->rules('max:300', ['max' => trans('validation.max')])->default(!empty($langDescriptions->description) ? $langDescriptions->description : null);
                 $form->hidden($language->code ."__champion_desc_id")->default($langDescriptions->id);
                 $arrFields[] = $language->code . '__name';
@@ -282,7 +286,7 @@ class ChampionController extends Controller
         })->tab(trans('language.champoines.horse_win'), function($form) use($languages){
             $arrParameters = request()->route()->parameters();
             $idCheck       = (int) end($arrParameters);
-          $form->hasMany('meta_data',' ', function (Form\NestedForm $form) use($languages, $idCheck){
+       //   $form->tab('info', function (Form $form) use($languages, $idCheck){
             $arrayDetails = array();
             $championDetails =  ChampionDetails::where('champion_id', $idCheck)->first();
             
@@ -290,6 +294,7 @@ class ChampionController extends Controller
                 $championDetails =  new ChampionDetails();
             }
             $ChampionDetailsDescription = new ChampionDetailsDescription();
+          
             $form->image('horse_image', trans('language.champoines.horse_image'))->appendAttribute($championDetails->horse_image);//->uniqueName()->move('horse_images');
             $form->radio('grade', trans('language.champoines.grade'))->options($this->grades)->default($championDetails->grade);
             $form->url('video', trans('language.champoines.video'))->default($championDetails->video);
@@ -324,7 +329,7 @@ class ChampionController extends Controller
                 }
             });
          //   $form->
-        });
+     //   });
         });
     }); 
     }
@@ -383,6 +388,7 @@ class ChampionController extends Controller
                 $championModel->longitude = $updateData['longitude'];
                 $championModel->latitude = $updateData['latitude'];
                 $championModel->type = $updateData['type'];
+                $championModel->parent_id = $updateData['parent_id'];
               //  dd($updateData);
                  $arrFields[$language->code]['name']        =  $updateData[$language->code . '__name'];
                  $arrFields[$language->code]['description'] =  $updateData[$language->code . '__description'];
