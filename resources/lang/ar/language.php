@@ -104,6 +104,13 @@ return [
         'create'      => 'انشاء فاعلية',
         'date'        => 'تاريخ الفاعلية' 
     ],
+    'horse'=>[
+      'name' => 'اسم الحصان',
+      'names' => 'الاحصنة',
+      'date_of_birth' => 'تاريخ الولادة',
+      'pedgree' => 'النسب',
+      'pedgrees' => 'الانساب'   
+    ],
     'champoines'=>[
         'champoines'  => 'البطولات',
         'champoine'   => 'بطولة',
